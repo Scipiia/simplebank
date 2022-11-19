@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"github.com/Sciipia/simplebank/util"
 	"github.com/stretchr/testify/require"
 	"testing"
@@ -49,6 +50,7 @@ func TestGetAccount(t *testing.T) {
 
 func TestUpdateAccount(t *testing.T) {
 	account1 := createRandomAccount(t)
+	fmt.Println("ACC1", account1)
 
 	arg := UpdateAccountParams{
 		ID:      account1.ID,
@@ -56,6 +58,8 @@ func TestUpdateAccount(t *testing.T) {
 	}
 
 	account2, err := testQueries.UpdateAccount(context.Background(), arg)
+	fmt.Println("ACC11", account1)
+	fmt.Println("ACC22", account2)
 	require.NoError(t, err)
 	require.NotEmpty(t, account2)
 	require.Equal(t, account1.ID, account2.ID)
@@ -80,12 +84,12 @@ func TestListAccount(t *testing.T) {
 		createRandomAccount(t)
 	}
 
-	arg := ListAccountParams{
+	arg := ListAccountsParams{
 		Limit:  5,
 		Offset: 5,
 	}
 
-	accounts, err := testQueries.ListAccount(context.Background(), arg)
+	accounts, err := testQueries.ListAccounts(context.Background(), arg)
 	require.NoError(t, err)
 	require.Len(t, accounts, 5)
 
